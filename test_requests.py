@@ -804,6 +804,16 @@ class RequestsTestCase(unittest.TestCase):
         r = s.get(httpbin('get'), headers={'FOO': None})
         assert 'foo' not in r.request.headers
 
+    def test_session_header_remove_with_none(self):
+        # Test that setting a session header to None removes it
+        s = requests.Session()
+        # Initially the session should have Accept-Encoding
+        assert 'Accept-Encoding' in s.headers
+        # Set it to None to remove it
+        s.headers['Accept-Encoding'] = None
+        r = s.get(httpbin('get'))
+        assert 'Accept-Encoding' not in r.request.headers
+
     def test_params_are_merged_case_sensitive(self):
         s = requests.Session()
         s.params['foo'] = 'bar'
